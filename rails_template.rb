@@ -9,13 +9,18 @@ plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
 plugin 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :submodule => true
+
+git :submodule => 'update --init'
+
 gem 'will_paginate'
 gem 'erubis', :lib => 'erubis/helpers/rails_helper', :version => '>=2.6.2'
 gem 'fastercsv'
 gem 'static_model', :version => '>=0.2.0'
 gem 'imanip', :version => '>=0.1.4'
 gem 'RedCloth', :version => '>=4.0.3'
-gem 'aasm', :source => 'git://github.com/rubyist/aasm.git'
+gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
+
+rake 'gems:install'
 
 generate(:authenticated, 'users', 'sessions', '--include-activation', '--aasm')
 
@@ -34,7 +39,7 @@ TEXT
 
 # jQuery
 file 'public/javascripts/jquery-min.js' do
-  open('http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js')
+  open('http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js').read
 end
 
 initializer 'date_formats.rb', <<-TEXT
@@ -58,7 +63,6 @@ class DateTime
 end
 TEXT
 
-rake 'gems:install'
 rake "db:migrate"
 
 git :add => '.'
