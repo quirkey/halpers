@@ -1,0 +1,3 @@
+= HALPERS
+
+This is a bucket for general rails and other helpers.
