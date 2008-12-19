@@ -1,6 +1,10 @@
 run "rm public/index.html"
 
 git :init
+
+freeze!
+capify!
+
 plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-authentication.git'
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
@@ -28,6 +32,11 @@ public/test_assets*
 db/sphinx
 TEXT
 
+# jQuery
+file 'public/javascripts/jquery-min.js' do
+  open('http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js')
+end
+
 initializer 'date_formats.rb', <<-TEXT
 Time::DATE_FORMATS[:published] = '%B %e, %Y'
 Time::DATE_FORMATS[:event_date] = '%B %e'
@@ -50,7 +59,6 @@ end
 TEXT
 
 rake 'gems:install'
-rake 'rails:freeze:edge'
 rake "db:migrate"
 
 git :add => '.'
