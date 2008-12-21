@@ -59,6 +59,30 @@ class DateTime
 end
 TEXT
 
+file 'test/factories.rb', <<-TEXT
+require 'factory_girl'
+
+Factory.define(:user) do |u|
+
+end
+TEXT
+
+file 'test/test_helper.rb', <<-TEXT
+ENV["RAILS_ENV"] = "test"
+require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require 'test_help'
+require 'factories'
+
+class ActiveSupport::TestCase
+  self.use_transactional_fixtures = true
+  self.use_instantiated_fixtures  = false
+
+  fixtures :all
+  
+  include QuirkeyTestHelper
+end
+TEXT
+
 rake 'gems:install'
 rake 'db:create:all'
 rake 'db:sessions:create'
