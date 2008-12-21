@@ -23,6 +23,8 @@ gem 'RedCloth', :version => '>=4.0.3'
 gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
 gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
 
+rake 'gems:install', :sudo => true
+
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
 
 file '.gitignore', <<-TEXT
@@ -83,7 +85,6 @@ class ActiveSupport::TestCase
 end
 TEXT
 
-rake 'gems:install'
 rake 'db:create:all'
 rake 'db:sessions:create'
 rake 'db:migrate:all' # in quirkey.rake
