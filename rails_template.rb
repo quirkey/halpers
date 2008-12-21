@@ -39,11 +39,6 @@ public/test_assets*
 db/sphinx
 TEXT
 
-# jQuery
-file 'public/javascripts/jquery-min.js' do
-  open('http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js').read
-end
-
 initializer 'date_formats.rb', <<-TEXT
 Time::DATE_FORMATS[:published] = '%B %e, %Y'
 Time::DATE_FORMATS[:event_date] = '%B %e'
