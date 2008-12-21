@@ -22,7 +22,7 @@ gem 'imanip', :version => '>=0.1.4'
 gem 'RedCloth', :version => '>=4.0.3'
 gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
 
-rake 'gems:install'
+rake 'gems:install --trace'
 
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
 
@@ -61,6 +61,7 @@ end
 TEXT
 
 rake 'db:create:all'
+rake 'db:sessions:create'
 rake 'db:migrate:all' # in quirkey.rake
 
 git :add => '.'
