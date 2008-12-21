@@ -9,6 +9,8 @@ plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
 plugin 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :submodule => true
+plugin 'jrails', :svn => 'http://ennerchi.googlecode.com/svn/trunk/plugins/jrails'
+plugin 'quirkey_helpers', :git => 'git://github.com/quirkey/quirkey_helpers.git'
 
 git :submodule => 'update --init'
 
@@ -63,7 +65,8 @@ class DateTime
 end
 TEXT
 
-rake "db:migrate"
+rake 'db:create:all'
+rake 'db:migrate'
 
 git :add => '.'
 git :commit => "-a -m 'Initial commit'"

@@ -1,3 +1,7 @@
 = HALPERS
 
-This is a bucket for general rails and other helpers.
+These are some test helpers, app helpers, monkey patches, and rake tasks extracted from 3 years of Rails development.
+Theres also a rails template (neato).
+In edge rails, user without download:
+
+rails -m http://github.com/quirkey/halpers/tree/master/rails_template.rb?raw=true
