@@ -1,5 +1,6 @@
-
 class ActiveRecord::Base
+  
+  
   def self.update_sortable_tree(param, position_param = :position)
     sort = {}
     param.each do |g_position,group|
@@ -57,12 +58,14 @@ class Array
   end
 end
 
-SAFE_URL_CHARS = 'a-z0-9\-\_'
-SAFE_URL_VALIDATION_PATTERN = Regexp.new("\\A[#{SAFE_URL_CHARS}]+\\Z")
-SAFE_URL_PATTERN = Regexp.new("[#{SAFE_URL_CHARS}]+")
+module Quirkey
+  SAFE_URL_CHARS = 'a-z0-9\-\_'
+  SAFE_URL_VALIDATION_PATTERN = Regexp.new("\\A[#{SAFE_URL_CHARS}]+\\Z")
+  SAFE_URL_PATTERN = Regexp.new("[#{SAFE_URL_CHARS}]+")
+end
 
 module ActiveSupport::CoreExtensions::String::Inflections
   def urlify
-    self.downcase.gsub(/\ /,'_').gsub(Regexp.new("[^#{SAFE_URL_CHARS}]"),'')[0..40]
+    self.downcase.gsub(/\ /,'_').gsub(Regexp.new("[^#{Quirkey::SAFE_URL_CHARS}]"),'')[0..40]
   end
 end
