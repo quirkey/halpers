@@ -10,7 +10,7 @@ plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodu
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
 plugin 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :submodule => true
 plugin 'jrails', :svn => 'http://ennerchi.googlecode.com/svn/trunk/plugins/jrails'
-plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git'
+plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git', :submodule => true
 
 git :submodule => 'update --init'
 
