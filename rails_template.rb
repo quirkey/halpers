@@ -5,7 +5,7 @@ git :init
 freeze!
 capify!
 
-plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-authentication.git'
+plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', :submodule => true
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
 plugin 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :submodule => true
@@ -22,7 +22,7 @@ gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
 
 rake 'gems:install'
 
-generate(:authenticated, 'users', 'sessions', '--include-activation', '--aasm')
+generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
 
 file '.gitignore', <<-TEXT
 tmp/*
