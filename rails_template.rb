@@ -26,6 +26,7 @@ gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.g
 rake 'gems:install', :sudo => true
 
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
+generate(:migration, 'AddFirstLastToUser', 'first_name:string', 'last_name:string')
 
 file '.gitignore', <<-TEXT
 tmp/*
@@ -65,7 +66,12 @@ file 'test/factories.rb', <<-TEXT
 require 'factory_girl'
 
 Factory.define(:user) do |u|
-
+  u.login 'aaron'
+  u.first_name 'Aaron'
+  u.last_name  'Quint'
+  u.email {|a| "#{a.first_name}.#{a.last_name}@example.com" }
+  u.password 'test!'
+  u.password_confirmation 'test!'
 end
 TEXT
 
