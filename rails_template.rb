@@ -21,6 +21,7 @@ gem 'static_model', :version => '>=0.2.0'
 gem 'imanip', :version => '>=0.1.4'
 gem 'RedCloth', :version => '>=4.0.3'
 gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
+gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
 
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
 
