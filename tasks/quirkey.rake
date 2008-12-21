@@ -1,10 +1,5 @@
 namespace :db do
   namespace :migrate do
-    desc ' Migrates one revision back then up to the current version'
-    task :downup => [:environment,'db:migrate:back'] do
-      ActiveRecord::Migrator.migrate("db/migrate/", nil)
-    end
-    
     desc 'Runs migrate, test:clone and annotate_models'
     task :all => ['db:migrate', 'db:test:clone', 'annotate_models'] do
     end
@@ -74,6 +69,7 @@ namespace :rails do
     end
   end
   
+  desc 'Copies models and tests MODELS=A,B,V from app FROM to app TO'
   task :copy_model => :environment do  
     models     = ENV['MODELS'].split(',')
     from       = File.expand_path(ENV['FROM'])
@@ -99,6 +95,7 @@ namespace :rails do
     end
   end 
 
+  desc 'Copies controllers CONTROLLERS=A,B,C from app FROM to app TO'
   task :copy_controller => :environment do
     controllers= ENV['CONTROLLERS'].split(',')
     from       = File.expand_path(ENV['FROM'])

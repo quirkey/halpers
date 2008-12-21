@@ -10,7 +10,7 @@ plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodu
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
 plugin 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :submodule => true
 plugin 'jrails', :svn => 'http://ennerchi.googlecode.com/svn/trunk/plugins/jrails'
-plugin 'quirkey_helpers', :git => 'git://github.com/quirkey/quirkey_helpers.git'
+plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git'
 
 git :submodule => 'update --init'
 
@@ -66,7 +66,7 @@ end
 TEXT
 
 rake 'db:create:all'
-rake 'db:migrate'
+rake 'db:migrate:all' # in quirkey.rake
 
 git :add => '.'
 git :commit => "-a -m 'Initial commit'"
