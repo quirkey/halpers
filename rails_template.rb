@@ -9,6 +9,13 @@ git :init
 freeze!
 capify!
 
+inside 'app/observers' {}
+inside 'app/mailers' {}
+
+environment "config.active_record.observers = :user_observer"
+environment "config.load_paths += %w[\#{Rails.root}/app/mailers \#{Rails.root}/app/observers]"
+
+
 puts "* Installing Plugins"
 plugin 'restful_authentication', :git => 'git://github.com/quirkey/restful-authentication.git', :submodule => true
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
@@ -33,6 +40,13 @@ rake 'gems:install', :sudo => true
 
 puts "* Generating authentication"
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
+
+in_root do
+  File.mv 'app/models/user_mailer.rb', 'app/mailers/user_mailer.rb'
+  File.mv 'app/models/user_observer.rb', 'app/observers/user_observer.rb'
+end
+
+
 
 puts "* Adding .gitignore"
 file '.gitignore', <<-TEXT
