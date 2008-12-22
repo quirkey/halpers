@@ -9,8 +9,10 @@ git :init
 freeze!
 capify!
 
-inside 'app/observers' {}
-inside 'app/mailers' {}
+in_root do
+  FileUtils.mkdir_p 'app/observers'
+  FileUtils.mkdir_p 'app/mailers'
+end
 
 environment "config.active_record.observers = :user_observer"
 environment "config.load_paths += %w[\#{Rails.root}/app/mailers \#{Rails.root}/app/observers]"
