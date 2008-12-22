@@ -1,4 +1,7 @@
+project_name = File.basename(File.expand_path(root))
+
 run "rm public/index.html"
+run "rm public/favicon.ico"
 
 git :init
 
@@ -89,6 +92,19 @@ class ActiveSupport::TestCase
   include AuthenticatedTestHelper
   include QuirkeyTestHelper
 
+end
+TEXT
+
+rakefile "#{project_name}.rake", <<-TEXT
+namespace :#{project_name} do
+  task :load_env => [:environment]
+  
+  namespace :clean do
+    desc 'Nightly maitenence task for #{project_name}'
+    task :nightly => ['#{project_name}:load_env', 'db:clear_sessions'] do
+      
+    end
+  end
 end
 TEXT
 
