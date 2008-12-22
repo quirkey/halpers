@@ -25,7 +25,7 @@ gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.g
 
 rake 'gems:install', :sudo => true
 
-generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
+generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
 
 file '.gitignore', <<-TEXT
 tmp/*
@@ -86,7 +86,9 @@ class ActiveSupport::TestCase
 
   fixtures :all
   
+  include AuthenticatedTestHelper
   include QuirkeyTestHelper
+
 end
 TEXT
 
