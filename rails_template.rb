@@ -1,5 +1,6 @@
 project_name = File.basename(File.expand_path(root))
 
+puts "* Removing public files"
 run "rm public/index.html"
 run "rm public/favicon.ico"
 
@@ -8,6 +9,7 @@ git :init
 freeze!
 capify!
 
+puts "* Installing Plugins"
 plugin 'restful_authentication', :git => 'git://github.com/quirkey/restful-authentication.git', :submodule => true
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
@@ -17,6 +19,7 @@ plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git', :submodule => 
 
 git :submodule => 'update --init'
 
+puts "* Adding gems"
 gem 'will_paginate'
 gem 'erubis', :lib => 'erubis/helpers/rails_helper', :version => '>=2.6.2'
 gem 'fastercsv'
@@ -28,8 +31,10 @@ gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.g
 
 rake 'gems:install', :sudo => true
 
+puts "* Generating authentication"
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
 
+puts "* Adding .gitignore"
 file '.gitignore', <<-TEXT
 tmp/*
 log/*
@@ -43,6 +48,7 @@ public/test_assets*
 db/sphinx
 TEXT
 
+puts "* Adding initializers"
 initializer 'date_formats.rb', <<-TEXT
 Time::DATE_FORMATS[:published] = '%B %e, %Y'
 Time::DATE_FORMATS[:event_date] = '%B %e'
@@ -64,6 +70,7 @@ class DateTime
 end
 TEXT
 
+puts "* Adding factory file"
 file 'test/factories.rb', <<-TEXT
 require 'factory_girl'
 
@@ -77,6 +84,7 @@ Factory.define(:user) do |u|
 end
 TEXT
 
+puts "* Rewriting test_helper"
 file 'test/test_helper.rb', <<-TEXT
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
@@ -95,6 +103,7 @@ class ActiveSupport::TestCase
 end
 TEXT
 
+puts "* Adding rakefile"
 rakefile "#{project_name}.rake", <<-TEXT
 namespace :#{project_name} do
   task :load_env => [:environment]
@@ -108,6 +117,7 @@ namespace :#{project_name} do
 end
 TEXT
 
+puts "* Running database"
 rake 'db:create:all'
 rake 'db:sessions:create'
 rake 'db:migrate:all' # in quirkey.rake
