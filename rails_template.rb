@@ -5,7 +5,7 @@ git :init
 freeze!
 capify!
 
-plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', :submodule => true
+plugin 'restful_authentication', :git => 'git://github.com/quirkey/restful-authentication.git', :submodule => true
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
 plugin 'shoulda', :git => 'git://github.com/thoughtbot/shoulda.git', :submodule => true
@@ -26,7 +26,6 @@ gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.g
 rake 'gems:install', :sudo => true
 
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm')
-generate(:migration, 'AddFirstLastToUser', 'first_name:string', 'last_name:string')
 
 file '.gitignore', <<-TEXT
 tmp/*
