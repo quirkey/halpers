@@ -78,7 +78,7 @@ Factory.define(:user) do |u|
   u.login 'aaron'
   u.first_name 'Aaron'
   u.last_name  'Quint'
-  u.email {|a| "#{a.first_name}.#{a.last_name}@example.com" }
+  u.email {|a| \"\#{a.first_name}.\#{a.last_name}@example.com\" }
   u.password 'test!'
   u.password_confirmation 'test!'
 end
