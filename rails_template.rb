@@ -1,6 +1,6 @@
 project_name = File.basename(File.expand_path(root))
 
-puts "* Removing public files"
+log '* removing'
 run "rm public/index.html"
 run "rm public/favicon.ico"
 
@@ -9,7 +9,7 @@ git :init
 freeze!
 capify!
 
-puts "* Installing Plugins"
+log 'installing', 'plugins'
 plugin 'restful_authentication', :git => 'git://github.com/quirkey/restful-authentication.git', :submodule => true
 plugin 'flashdance', :git => 'git://github.com/quirkey/flashdance.git', :submodule => true
 plugin 'annotate_models', :git => 'git://github.com/benaskins/annotate_models.git'
@@ -19,14 +19,15 @@ plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git', :submodule => 
 
 git :submodule => 'update --init'
 
-puts "* Generating authentication"
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
 
 file 'app/views/shared/flash.yml', '---'
 
 in_root do
+  log 'creating', 'app/observers'  
   FileUtils.mkdir_p 'app/observers'
   FileUtils.mkdir_p 'app/mailers'
+  log 'creating', 'app/mailers'
   FileUtils.mv 'app/models/user_mailer.rb', 'app/mailers/user_mailer.rb'
   FileUtils.mv 'app/models/user_observer.rb', 'app/observers/user_observer.rb'
 end
@@ -37,7 +38,8 @@ environment "config.load_paths += %W[\#{Rails.root}/app/mailers \#{Rails.root}/a
 
 puts "* Adding gems"
 gem 'will_paginate'
-gem 'erubis', :lib => 'erubis/helpers/rails_helper', :version => '>=2.6.2'
+# Erubis is broken with edge rails
+# gem 'erubis', :lib => 'erubis/helpers/rails_helper', :version => '>=2.6.2'
 gem 'fastercsv'
 gem 'static_model', :version => '>=0.2.0'
 gem 'imanip', :version => '>=0.1.4'
