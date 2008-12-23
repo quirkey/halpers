@@ -31,7 +31,7 @@ in_root do
 end
 
 environment "config.active_record.observers = :user_observer"
-environment "config.load_paths += %w[\#{Rails.root}/app/mailers \#{Rails.root}/app/observers]"
+environment "config.load_paths += %W[\#{Rails.root}/app/mailers \#{Rails.root}/app/observers]"
 
 
 puts "* Adding gems"
