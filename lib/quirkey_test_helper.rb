@@ -135,11 +135,3 @@ module QuirkeyTestHelper
   end
   
 end
-
-module ActionController
-  class TestRequest < AbstractRequest
-    def user_agent
-      'Test Agent'
-    end
-  end
-end

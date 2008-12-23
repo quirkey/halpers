@@ -22,6 +22,7 @@ git :submodule => 'update --init'
 puts "* Generating authentication"
 generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
 
+file 'app/views/shared/flash.yml', '---'
 
 in_root do
   FileUtils.mkdir_p 'app/observers'
