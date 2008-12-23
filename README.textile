@@ -8,6 +8,6 @@ There's also a rails template (neato).
 In edge rails, user without download:
 
 <pre>
-rails -m http://github.com/quirkey/halpers/tree/master/rails_template.rb?raw=true
+rails -m http://github.com/quirkey/halpers/raw/master/rails_template.rb
 </pre>
 
