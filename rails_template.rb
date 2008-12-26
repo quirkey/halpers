@@ -157,6 +157,17 @@ file "public/stylesheets/#{project_name}.css", <<-TEXT
 
 TEXT
 
+file 'app/controllers/application_controller.rb', <<-TEXT
+class ApplicationController < ActionController::Base
+  include AuthenticatedSystem
+  
+  helper :all 
+  protect_from_forgery
+
+  filter_parameter_logging :password
+end
+TEXT
+
 puts "* Running database"
 rake 'db:create:all'
 rake 'db:sessions:create'
