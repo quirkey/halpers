@@ -45,7 +45,6 @@ gem 'static_model', :version => '>=0.2.0'
 gem 'imanip', :version => '>=0.1.4'
 gem 'RedCloth', :version => '>=4.0.3'
 gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
-gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
 
 rake 'gems:install', :sudo => true
 
@@ -85,26 +84,12 @@ class DateTime
 end
 TEXT
 
-puts "* Adding factory file"
-file 'test/factories.rb', <<-TEXT
-require 'factory_girl'
-
-Factory.define(:user) do |u|
-  u.login 'aaron'
-  u.first_name 'Aaron'
-  u.last_name  'Quint'
-  u.email {|a| \"\#{a.first_name}.\#{a.last_name}@example.com\" }
-  u.password 'test!'
-  u.password_confirmation 'test!'
-end
-TEXT
 
 puts "* Rewriting test_helper"
 file 'test/test_helper.rb', <<-TEXT
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
-require 'factories'
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
