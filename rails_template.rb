@@ -19,7 +19,8 @@ plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git', :submodule => 
 
 git :submodule => 'update --init'
 
-generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
+use_email = yes?('Use email instead of login for authentication?')
+generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda', "#{use_email ? '--email' : ''}")
 
 file 'app/views/shared/flash.yml', '---'
 
@@ -35,8 +36,6 @@ end
 environment "config.active_record.observers = :user_observer"
 environment "config.load_paths += %W[\#{Rails.root}/app/mailers \#{Rails.root}/app/observers]"
 
-
-puts "* Adding gems"
 gem 'will_paginate'
 # Erubis is broken with edge rails
 # gem 'erubis', :lib => 'erubis/helpers/rails_helper', :version => '>=2.6.2'
@@ -48,7 +47,6 @@ gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
 
 rake 'gems:install', :sudo => true
 
-puts "* Adding .gitignore"
 file '.gitignore', <<-TEXT
 tmp/*
 log/*
@@ -62,7 +60,6 @@ public/test_assets*
 db/sphinx
 TEXT
 
-puts "* Adding initializers"
 initializer 'date_formats.rb', <<-TEXT
 Time::DATE_FORMATS[:published] = '%B %e, %Y'
 Time::DATE_FORMATS[:event_date] = '%B %e'
@@ -85,7 +82,7 @@ end
 TEXT
 
 
-puts "* Rewriting test_helper"
+log 'rewriting', 'test_helper'
 file 'test/test_helper.rb', <<-TEXT
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
@@ -103,7 +100,6 @@ class ActiveSupport::TestCase
 end
 TEXT
 
-puts "* Adding rakefile"
 rakefile "#{project_name}.rake", <<-TEXT
 namespace :#{project_name} do
   task :load_env => [:environment]
@@ -153,7 +149,7 @@ class ApplicationController < ActionController::Base
 end
 TEXT
 
-puts "* Running database"
+log 'running', 'database'
 rake 'db:create:all'
 rake 'db:sessions:create'
 rake 'db:migrate:all' # in quirkey.rake
