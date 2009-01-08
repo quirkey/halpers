@@ -20,7 +20,7 @@ plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git', :submodule => 
 git :submodule => 'update --init'
 
 use_email = yes?('Use email instead of login for authentication?')
-generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda', "#{use_email ? '--email' : ''}")
+generate(:authenticated, 'user', 'sessions', 'accounts', '--include-activation', '--aasm', '--shoulda', "#{use_email ? '--email' : ''}")
 
 file 'app/views/shared/flash.yml', '---'
 
@@ -53,6 +53,7 @@ log/*
 db/latest*
 .DS_Store
 vendor/rails*
+vendor/gems*
 *.svn*
 public/assets*
 public/test_assets*
