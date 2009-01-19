@@ -1,4 +1,5 @@
 module UploadTestHelper
+  
   def uploaded_file(path, content_type="application/octet-stream", filename=nil)
     filename ||= File.basename(path)
     t = Tempfile.new(filename)
@@ -32,7 +33,7 @@ module UploadTestHelper
   end
 
   def uploaded_asset_path(filename)
-    File.expand_path(File.join(__FILE__,'..','assets',filename))
+    File.expand_path(File.join(__FILE__,'..','..','assets',filename))
   end
 
   def uploaded_pdf_path

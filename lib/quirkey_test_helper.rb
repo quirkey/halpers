@@ -1,7 +1,7 @@
 $:.unshift(File.dirname(__FILE__))
-require 'test_helper/upload'
-require 'test_helper/collections'
-require 'test_helper/login'
+require 'test_helpers/upload'
+require 'test_helpers/collections'
+require 'test_helpers/login'
 
 module QuirkeyTestHelper
   include UploadTestHelper
