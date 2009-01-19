@@ -145,4 +145,24 @@ module QuirkeyTestHelper
   def assert_public_file_is_not_readable(file_path)
     assert !File.readable?(public_file_on_fs(file_path)), "#{file_path} is readable but it shouldnt be"
   end
+  
+  def uploaded_pdf
+    uploaded_file(uploaded_pdf_path,'application/pdf')
+  end
+
+  def uploaded_jpg(filename = 'test.jpg')
+    uploaded_file(uploaded_jpg_path(filename),'image/jpeg')
+  end
+
+  def uploaded_asset_path(filename)
+    File.expand_path(File.join(__FILE__,'..','assets',filename))
+  end
+  
+  def uploaded_pdf_path
+    uploaded_asset_path('test.pdf')
+  end
+
+  def uploaded_jpg_path(filename = 'test.jpg')
+    uploaded_asset_path(filename)
+  end
 end
