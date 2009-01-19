@@ -1,5 +1,13 @@
-module QuirkeyTestHelper
+$:.unshift(File.dirname(__FILE__))
+require 'test_helper/upload'
+require 'test_helper/collections'
+require 'test_helper/login'
 
+module QuirkeyTestHelper
+  include UploadTestHelper
+  include CollectionsTestHelper
+  include LoginTestHelper
+  
   def assert_toggled(object, method = nil, toggled = true)
     initial_value = object.send(method)
     yield
@@ -10,18 +18,6 @@ module QuirkeyTestHelper
 
   def assert_same_as_before(object, method, &block)
     assert_toggled object, method, false, &block
-  end
-
-  def uploaded_file(path, content_type="application/octet-stream", filename=nil)
-    filename ||= File.basename(path)
-    t = Tempfile.new(filename)
-    FileUtils.copy_file(path, t.path)
-    (class << t; self; end;).class_eval do
-      alias local_path path
-      define_method(:original_filename) { filename }
-      define_method(:content_type) { content_type }
-    end
-    return t
   end
 
   def assert_flash(key, content)
@@ -50,10 +46,6 @@ module QuirkeyTestHelper
     assert_select "div##{eid}", 1, "Should display div with id=#{eid}"
   end
 
-  def assert_redirected_to_login
-    assert_redirected_to "/login"
-  end
-
   def assert_dom_id(record, tag = 'div', count = 1)
     dom_id =  dom_id(record)
     assert_select "#{tag}##{dom_id}", count, "Could not find #{tag} with id=#{dom_id}"
@@ -74,95 +66,10 @@ module QuirkeyTestHelper
     assert((expected - test).to_i < 10 && (expected - test).to_i > - 10, "Times #{expected} : #{test} are not relative")
   end
 
-  def logout
-    @request.session[:user] = nil
-  end
-
-  def assert_validates_presence_of(klass, meths)
-    k = klass.create
-    assert !k.id
-    assert_errors_on k, meths
-  end
-
-  def assert_validates_uniqueness_of(test_instance,meths)
-    k = test_instance.class.create(test_instance.attributes.reject {|i,v| i == 'id' })
-    assert !k.id
-    assert_errors_on k, meths
-  end
-
-  def assert_errors_on(ob, meths)
-    meths.each do |meth|
+  def assert_errors_on(ob, *meths)
+    [meths].flatten.each do |meth|
       assert ob.errors.on(meth), "#{ob.class}.#{meth} should have errors"
     end
   end
-
-  def assert_all(collection)
-    collection.each do |one|
-      assert yield(one), "#{one.inspect} is not true"
-    end
-  end
   
-  def assert_assigns(expected, assigned, message = nil)
-    message ||= "should assign #{expected} to @#{assigned}"
-    assert_equal(expected, assigns(assigned), message)
-  end
-
-  def assert_any(collection, &block)
-    has = collection.any? do |one|
-      yield(one)
-    end
-    assert has
-  end
-
-  def assert_ordered(array_of_ordered_items, message = nil, &block)
-    raise "Parameter must be an Array" unless array_of_ordered_items.is_a?(Array)
-    message ||= "Items were not in the correct order"
-    i = 0
-    # puts array_of_ordered_items.length
-    while i < (array_of_ordered_items.length - 1)
-      # puts "j"
-      a, b = array_of_ordered_items[i], array_of_ordered_items[i+1]
-      comparison = yield(a,b)
-      # raise "#{comparison}"
-      assert(comparison, message + " - #{a}, #{b}")
-      i += 1
-    end
-  end
-  
-  def assert_set_of(klass, set)
-    assert set.respond_to?(:each), "#{set.inspect} is not a set (does not include Enumerable)"
-    assert_all(set) {|a| a.is_a?(klass) }
-  end
-  
-  def public_file_on_fs(file_path)
-    File.join(Rails.root,'public',file_path)
-  end
-
-  def assert_public_file_is_readable(file_path)
-    assert File.readable?(public_file_on_fs(file_path)), "#{file_path} is not readable or does not exist"
-  end
-
-  def assert_public_file_is_not_readable(file_path)
-    assert !File.readable?(public_file_on_fs(file_path)), "#{file_path} is readable but it shouldnt be"
-  end
-  
-  def uploaded_pdf
-    uploaded_file(uploaded_pdf_path,'application/pdf')
-  end
-
-  def uploaded_jpg(filename = 'test.jpg')
-    uploaded_file(uploaded_jpg_path(filename),'image/jpeg')
-  end
-
-  def uploaded_asset_path(filename)
-    File.expand_path(File.join(__FILE__,'..','assets',filename))
-  end
-  
-  def uploaded_pdf_path
-    uploaded_asset_path('test.pdf')
-  end
-
-  def uploaded_jpg_path(filename = 'test.jpg')
-    uploaded_asset_path(filename)
-  end
 end
