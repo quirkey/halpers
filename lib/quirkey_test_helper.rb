@@ -134,4 +134,15 @@ module QuirkeyTestHelper
     assert_all(set) {|a| a.is_a?(klass) }
   end
   
+  def public_file_on_fs(file_path)
+    File.join(Rails.root,'public',file_path)
+  end
+
+  def assert_public_file_is_readable(file_path)
+    assert File.readable?(public_file_on_fs(file_path)), "#{file_path} is not readable or does not exist"
+  end
+
+  def assert_public_file_is_not_readable(file_path)
+    assert !File.readable?(public_file_on_fs(file_path)), "#{file_path} is readable but it shouldnt be"
+  end
 end
