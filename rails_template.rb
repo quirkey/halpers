@@ -19,7 +19,8 @@ plugin 'halpers', :git => 'git://github.com/quirkey/halpers.git', :submodule => 
 
 git :submodule => 'update --init'
 
-generate(:authenticated, 'user', 'sessions', '--include-activation', '--aasm', '--shoulda')
+use_email = yes?('Use email instead of login for authentication?')
+generate(:authenticated, 'user', 'sessions', 'accounts', '--include-activation', '--aasm', '--shoulda', "#{use_email ? '--email' : ''}")
 
 file 'app/views/shared/flash.yml', '---'
 
@@ -35,8 +36,6 @@ end
 environment "config.active_record.observers = :user_observer"
 environment "config.load_paths += %W[\#{Rails.root}/app/mailers \#{Rails.root}/app/observers]"
 
-
-puts "* Adding gems"
 gem 'will_paginate'
 # Erubis is broken with edge rails
 # gem 'erubis', :lib => 'erubis/helpers/rails_helper', :version => '>=2.6.2'
@@ -45,17 +44,16 @@ gem 'static_model', :version => '>=0.2.0'
 gem 'imanip', :version => '>=0.1.4'
 gem 'RedCloth', :version => '>=4.0.3'
 gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
-gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com'
 
 rake 'gems:install', :sudo => true
 
-puts "* Adding .gitignore"
 file '.gitignore', <<-TEXT
 tmp/*
 log/*
 db/latest*
 .DS_Store
 vendor/rails*
+vendor/gems*
 *.svn*
 public/assets*
 public/test_assets*
@@ -63,7 +61,6 @@ public/test_assets*
 db/sphinx
 TEXT
 
-puts "* Adding initializers"
 initializer 'date_formats.rb', <<-TEXT
 Time::DATE_FORMATS[:published] = '%B %e, %Y'
 Time::DATE_FORMATS[:event_date] = '%B %e'
@@ -85,26 +82,12 @@ class DateTime
 end
 TEXT
 
-puts "* Adding factory file"
-file 'test/factories.rb', <<-TEXT
-require 'factory_girl'
 
-Factory.define(:user) do |u|
-  u.login 'aaron'
-  u.first_name 'Aaron'
-  u.last_name  'Quint'
-  u.email {|a| \"\#{a.first_name}.\#{a.last_name}@example.com\" }
-  u.password 'test!'
-  u.password_confirmation 'test!'
-end
-TEXT
-
-puts "* Rewriting test_helper"
+log 'rewriting', 'test_helper'
 file 'test/test_helper.rb', <<-TEXT
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
-require 'factories'
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
@@ -118,7 +101,6 @@ class ActiveSupport::TestCase
 end
 TEXT
 
-puts "* Adding rakefile"
 rakefile "#{project_name}.rake", <<-TEXT
 namespace :#{project_name} do
   task :load_env => [:environment]
@@ -132,7 +114,11 @@ namespace :#{project_name} do
 end
 TEXT
 
+<<<<<<< HEAD:rails_template.rb
 file 'app/views/layout/main.erb', <<-TEXT
+=======
+file 'app/views/layouts/main.html.erb', <<-TEXT
+>>>>>>> 2ecaa46d96815196dd1bdf188fabb2946d62a2d0:rails_template.rb
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -157,7 +143,18 @@ file "public/stylesheets/#{project_name}.css", <<-TEXT
 
 TEXT
 
-puts "* Running database"
+file 'app/controllers/application_controller.rb', <<-TEXT
+class ApplicationController < ActionController::Base
+  include AuthenticatedSystem
+  
+  helper :all 
+  protect_from_forgery
+
+  filter_parameter_logging :password
+end
+TEXT
+
+log 'running', 'database'
 rake 'db:create:all'
 rake 'db:sessions:create'
 rake 'db:migrate:all' # in quirkey.rake

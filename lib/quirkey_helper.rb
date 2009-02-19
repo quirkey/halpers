@@ -124,7 +124,7 @@ module QuirkeyHelper
         if controller_pair.is_a? Array
           name, controller = controller_pair[0], controller_pair[1]
         else
-          name, controller = controller_pair.humanize.downcase, controller_pair
+          name, controller = controller_pair, controller_pair
         end
         html << yield(name,controller)
       end
