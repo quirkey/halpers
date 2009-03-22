@@ -60,10 +60,10 @@ module QuirkeyTestHelper
     items.collect {|i| post_hash[i.id.to_s] = i.attributes }; post_hash
   end
 
-  def assert_relative_times(expected, test)
+  def assert_relative_times(expected, test, range = 100)
     assert expected, "Expected time is nil"
     assert test, "Test time is nil"
-    assert((expected - test).to_i < 10 && (expected - test).to_i > - 10, "Times #{expected} : #{test} are not relative")
+    assert((expected - test).to_i < range && (expected - test).to_i > (-range), "Times #{expected} : #{test} are not relative")
   end
 
   def assert_errors_on(ob, *meths)

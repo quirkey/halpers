@@ -22,7 +22,7 @@ task :deploy_edge do
   puts "Shared Path: #{shared_path}"
 
   rails_path    = File.join(shared_path, 'rails')
-  rails_version = ENV['VERSION'] || ENV['REVISION'] || 'v2.1.0'
+  rails_version = ENV['VERSION'] || ENV['REVISION'] || 'HEAD'
   export_path   = File.join(rails_path, "rails_#{rails_version}")
   symlink_path  = File.join(RAILS_ROOT, 'vendor','rails')
   puts "Pulling Rails tag: #{rails_version} to #{export_path}"
