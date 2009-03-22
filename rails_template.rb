@@ -42,8 +42,10 @@ gem 'will_paginate'
 gem 'fastercsv'
 gem 'static_model', :version => '>=0.2.0'
 gem 'imanip', :version => '>=0.1.4'
-gem 'RedCloth', :version => '>=4.0.3'
+gem 'RedCloth', :version => '=4.0.4'
 gem 'rubyist-aasm', :source => 'http://gems.github.com', :lib => 'aasm'
+gem 'qadmin', :version => '>=0.2.1'
+gem 'restful_query', :version '>=0.2.0'
 
 rake 'gems:install', :sudo => true
 

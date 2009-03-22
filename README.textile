@@ -5,7 +5,7 @@ h1. HALPERS
 These are some test helpers, app helpers, monkey patches, and rake tasks extracted from 3 years of Rails development.
 There's also a rails template (neato).
 
-In edge rails, user without download:
+In edge rails, use without download:
 
 <pre>
 rails -m http://github.com/quirkey/halpers/raw/master/rails_template.rb
