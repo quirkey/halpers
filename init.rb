@@ -2,4 +2,6 @@
   require File.join(File.dirname(__FILE__), 'lib', lib)
 end
 
-::ActionView::Base.send :include, QuirkeyHelper
+if defined?(ActionView::Base)
+  ::ActionView::Base.send :include, QuirkeyHelper
+end
