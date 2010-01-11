@@ -9,6 +9,24 @@ class SuperHash < HashWithIndifferentAccess
     end
   end  
   
+  def [](key)
+    superify(super)
+  end
+  
+  def self.superify(val)
+    if val.is_a?(Hash) && !val.is_a?(SuperHash)
+      SuperHash.new(val)
+    elsif val.is_a?(Array)
+      val.collect {|f| superify(f) }
+    else
+      val
+    end
+  end
+  
+  def superify(val)
+    self.class.superify(val)
+  end
+  
   private
   def method_missing(m,*a)
     if m.to_s =~ /\?$/ && self.has_key?(m.to_s[0...-1])
@@ -17,9 +35,10 @@ class SuperHash < HashWithIndifferentAccess
     if m.to_s =~ /=$/
       self[$`] = a[0]
     elsif a.empty?
-      self[m.to_s] 
+      self[m.to_s]
     else
       super
     end
   end
+    
 end
