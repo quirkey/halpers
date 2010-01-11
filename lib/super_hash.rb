@@ -1,6 +1,8 @@
+require 'active_support/core_ext/hash'
+
 class SuperHash < HashWithIndifferentAccess
   include DeepHash
-  
+
   def deep_merge(other_hash)
     self.dup.to_hash.merge(other_hash) do |key, old_val, new_val|
       self[key] = (old_val.is_a?(Hash) && new_val.is_a?(Hash)) ? old_val.deep_merge(new_val) : new_val
